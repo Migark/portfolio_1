@@ -1,51 +1,1054 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portifolio</title>
-    <link rel="stylesheet" href="./styles/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miguel Kelbert — Computer Engineering Student</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --surface2: #161b22;
+      --border: #21262d;
+      --accent: #00e5a0;
+      --accent2: #0ff;
+      --accent3: #7c5cfc;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* GRID BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,160,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,160,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NOISE OVERLAY */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px;
+      opacity: .5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      backdrop-filter: blur(12px);
+      background: rgba(8,12,16,.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: .05em;
+    }
+
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .08em;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .accent { color: var(--accent); }
+    h1 .dim { color: var(--muted); }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      padding: .75rem 1.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #00ffb3;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,229,160,.3);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* HERO CARD */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,229,160,.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .code-block {
+      font-family: var(--mono);
+      font-size: .8rem;
+      line-height: 2;
+      color: var(--muted);
+    }
+
+    .code-block .kw { color: var(--accent3); }
+    .code-block .str { color: var(--accent); }
+    .code-block .fn { color: var(--accent2); }
+    .code-block .cm { color: #484f58; }
+    .code-block .num { color: #f8a261; }
+
+    /* SOCIAL ROW */
+    .social-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-link {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--muted);
+      transition: all .2s;
+      font-size: 1.1rem;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* DIVIDER */
+    .divider {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* SECTION WRAPPER */
+    .section-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 3rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    .about-text p strong { color: var(--text); }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-value .hi { color: var(--accent); }
+
+    /* SKILLS */
+    #skills { background: var(--surface); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color .2s;
+    }
+
+    .skill-group:hover { border-color: var(--accent); }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .skill-group-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: .72rem;
+      padding: .3rem .8rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all .2s;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,.05);
+    }
+
+    /* EXPERIENCE */
+    .exp-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      padding-bottom: 3rem;
+      position: relative;
+    }
+
+    .exp-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 200px;
+      top: 2rem;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .exp-date {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      text-align: right;
+      padding-top: .25rem;
+      line-height: 1.6;
+    }
+
+    .exp-dot {
+      position: absolute;
+      left: 196px;
+      top: .45rem;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(0,229,160,.6);
+      z-index: 1;
+    }
+
+    .exp-content {
+      padding-left: 2rem;
+    }
+
+    .exp-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+
+    .exp-company {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .exp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .exp-list li {
+      font-size: .9rem;
+      color: var(--muted);
+      display: flex;
+      gap: .6rem;
+      line-height: 1.6;
+    }
+
+    .exp-list li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+      font-family: var(--mono);
+    }
+
+    /* EDUCATION */
+    #education { background: var(--surface); }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+
+    .edu-card:hover { border-color: var(--accent3); }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent), var(--accent3));
+      border-radius: 3px 0 0 3px;
+    }
+
+    .edu-badge {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--accent);
+      border: 1px solid rgba(0,229,160,.3);
+      background: rgba(0,229,160,.05);
+      padding: .25rem .7rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      letter-spacing: .08em;
+    }
+
+    .edu-degree {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+
+    .edu-institution {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--accent3);
+      margin-bottom: .8rem;
+    }
+
+    .edu-period {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    /* LANGUAGES */
+    .lang-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .lang-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lang-flag { font-size: 1.6rem; }
+
+    .lang-info-name { font-weight: 700; font-size: .95rem; }
+
+    .lang-info-level {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--accent);
+    }
+
+    /* CONTACT */
+    #contact {
+      text-align: center;
+    }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 4rem;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 200px;
+      background: radial-gradient(ellipse, rgba(0,229,160,.1) 0%, transparent 70%);
+    }
+
+    .contact-card h2 {
+      margin-bottom: 1rem;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: .95rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      font-family: var(--mono);
+      font-size: .82rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: .8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all .2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,.04);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem 4rem;
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--accent);
+      animation: blink 1s step-start infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    .hero-inner > * { animation: fadeUp .8s ease both; }
+    .hero-inner > *:nth-child(2) { animation-delay: .15s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .section-wrap { padding: 4rem 1.5rem; }
+
+      .about-grid,
+      .edu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: .5rem;
+      }
+
+      .exp-item::after { display: none; }
+      .exp-dot { display: none; }
+      .exp-date { text-align: left; }
+      .exp-content { padding-left: 0; }
+
+      .contact-card { padding: 2rem 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: .8rem 1rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: .7rem; }
+      #hero { padding: 7rem 1.2rem 3rem; }
+      h1 { font-size: 2.2rem; }
+    }
+  </style>
 </head>
 
 <body>
-    <header class="cabecalho">
-        <nav class="cabecalho__menu">
-            <a class="cabecalho__menu__link" href="index.html">Home</a>
-            <a class="cabecalho__menu__link" href="about.html">Sobre mim</a>
-            <a class="cabecalho__menu__link" href="curriculo.html">Currículo</a>
-        </nav>
-    </header>
-    <main class="apresentacao">
-        <section class="apresentacao__conteudo">
-            <h1 class="apresentacao__conteudo__titulo">Eleve seu negócio digital a outro nível<strong 
-            class="titulo-destaque"> com um Front-end de qualidade!
-            </strong></h1>
-            <p class="apresentacao__conteudo__texto">Olá! Sou Miguel Ângelo, desenvolvedor
-            Front-end, minhas tecnologias são <span class="subtitulo-destaque"> HTML,
-            CSS, JavaScript e Java.</span> Pretendo me especializar trabalhando como Fullstack. Vamos
-            conversar?</p>
-            <div class="apresentacao__links">
-                <h2 class="apresentacao__links__subtitulo">Acesse minhas redes:</h2>
-                <a class="apresentacao__links__navegacao" href="https://instagram.com/mig_ark">
-                    <img src="./assets/instagram.png" alt="Icone Instagram">
-                    Instagram    
-                </a>
-                <a class="apresentacao__links__navegacao" href="https://github.com/Migark">
-                   <img src="./assets/github.png" alt="Icone GitHub">
-                    GitHub
-                </a>
-                <a class="apresentacao__links__navegacao" href="https://www.linkedin.com/in/miguel-kelbert-92886b239/">
-                    <img src="./assets/linkedin.png" alt="Icone Linkedin">
-                    Linkedin
-                </a>
-            </div>
-            </section>
-        <img class="apresentacao__imagem" src="./assets/fotoPortfolio.jpg" alt="Foto do Mignavegacao">
-    </main>
-    <footer class="rodape">
-        <p>Desenvolvido por Miguel Kelbert</p>
-    </footer>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero"><span>//</span> mkelbert</a>
+    <ul class="nav-links">
+      <li><a href="#about">sobre</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#experience">experiência</a></li>
+      <li><a href="#education">formação</a></li>
+      <li><a href="#contact">contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-tag">disponível para oportunidades</p>
+        <h1>
+          Miguel<br>
+          <span class="accent">Kelbert</span><br>
+          <span class="dim">Dev &amp; Eng.</span>
+        </h1>
+        <p class="hero-desc">
+          Estudante de <strong>Engenharia da Computação na UFRGS</strong>, apaixonado por Python, automação e resolução de problemas. Construindo soluções que importam.
+        </p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">→ Entrar em contato</a>
+          <a href="#experience" class="btn btn-outline">Ver experiência</a>
+        </div>
+        <div class="social-row">
+          <a class="social-link" href="https://github.com/Migark" target="_blank" title="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.7 1.6.2 2.8.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.linkedin.com/in/miguel-kelbert-92886b239/" target="_blank" title="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
+          </a>
+          <a class="social-link" href="mailto:miguel.kelbert@gmail.com" title="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-left:.5rem;">profile.py</span>
+        </div>
+        <div class="code-block">
+          <div><span class="cm"># Miguel Ângelo Rocha Kelbert</span></div>
+          <div>&nbsp;</div>
+          <div><span class="kw">class</span> <span class="fn">Developer</span>:</div>
+          <div>&nbsp; name <span class="kw">=</span> <span class="str">"Miguel Kelbert"</span></div>
+          <div>&nbsp; role <span class="kw">=</span> <span class="str">"Eng. Computação"</span></div>
+          <div>&nbsp; university <span class="kw">=</span> <span class="str">"UFRGS"</span></div>
+          <div>&nbsp;</div>
+          <div>&nbsp; skills <span class="kw">=</span> [</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="str">"Python"</span>, <span class="str">"C"</span>,</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="str">"SQL"</span>, <span class="str">"Git"</span>,</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="str">"OOP"</span>, <span class="str">"Kotlin"</span></div>
+          <div>&nbsp; ]</div>
+          <div>&nbsp;</div>
+          <div>&nbsp; languages <span class="kw">=</span> {</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="str">"pt-BR"</span>: <span class="str">"nativo"</span>,</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="str">"en"</span>: <span class="str">"avançado"</span></div>
+          <div>&nbsp; }</div>
+          <div>&nbsp;</div>
+          <div>&nbsp; <span class="kw">def</span> <span class="fn">status</span>(self):</div>
+          <div>&nbsp;&nbsp;&nbsp; <span class="kw">return</span> <span class="str">"open_to_work"</span><span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-wrap">
+      <p class="section-label">01 — sobre mim</p>
+      <h2>Quem sou eu</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Olá! Sou <strong>Miguel Ângelo</strong>, estudante de <strong>Engenharia da Computação na UFRGS</strong> e autista. Acredito que neurodiversidade é uma vantagem: minha atenção aos detalhes e foco profundo me tornam um desenvolvedor mais cuidadoso e persistente.
+          </p>
+          <p>
+            Tenho experiência prática como <strong>Estagiário de TI na Laux Systems</strong>, onde atuei em suporte técnico, diagnóstico de incidentes e documentação de infraestrutura. Essa vivência me mostrou o valor de trabalhar bem em equipe e de comunicar soluções técnicas com clareza.
+          </p>
+          <p>
+            Atualmente estou aprofundando meus conhecimentos em <strong>Python, lógica de programação e automação</strong>. Tenho interesse em back-end, desenvolvimento full-stack e soluções que combinam engenharia de software com eficiência operacional.
+          </p>
+          <p>
+            Fora da tela, gosto de eletrônica com Arduino e estou sempre explorando novas tecnologias. <strong>Busco uma oportunidade</strong> onde possa crescer, contribuir e aprender com profissionais experientes.
+          </p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card">
+            <span class="stat-label">UNIVERSIDADE</span>
+            <span class="stat-value"><span class="hi">UFRGS</span> — Eng. Computação</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">FORMAÇÃO TÉCNICA</span>
+            <span class="stat-value">Informática para Internet — QI Faculdade</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">LOCALIZAÇÃO</span>
+            <span class="stat-value">Canoas, RS — <span class="hi">Brasil</span></span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">STATUS</span>
+            <span class="stat-value"><span class="hi">●</span> Disponível para oportunidades</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">EMAIL</span>
+            <span class="stat-value" style="font-family:var(--mono);font-size:.85rem;">miguel.kelbert@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-wrap">
+      <p class="section-label">02 — habilidades</p>
+      <h2>Tecnologias &amp; Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-group-title">Linguagens</div>
+          <div class="skill-tags">
+            <span class="tag">Python</span>
+            <span class="tag">C</span>
+            <span class="tag">Kotlin (básico)</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Programação</div>
+          <div class="skill-tags">
+            <span class="tag">Lógica de Programação</span>
+            <span class="tag">OOP</span>
+            <span class="tag">CRUD</span>
+            <span class="tag">Automação</span>
+            <span class="tag">Scripting</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Ferramentas</div>
+          <div class="skill-tags">
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">Jira</span>
+            <span class="tag">Microsoft 365</span>
+            <span class="tag">Cline AI</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Infraestrutura</div>
+          <div class="skill-tags">
+            <span class="tag">Suporte TI</span>
+            <span class="tag">Redes básicas</span>
+            <span class="tag">Troubleshooting</span>
+            <span class="tag">Segurança básica</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Soft Skills</div>
+          <div class="skill-tags">
+            <span class="tag">Documentação técnica</span>
+            <span class="tag">Resolução de problemas</span>
+            <span class="tag">Metodologias Ágeis</span>
+            <span class="tag">Code Review</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Hardware / Embarcados</div>
+          <div class="skill-tags">
+            <span class="tag">Arduino</span>
+            <span class="tag">Montagem de PCs</span>
+            <span class="tag">Sistemas embarcados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-wrap">
+      <p class="section-label">03 — experiência</p>
+      <h2>Experiência Profissional</h2>
+      <div class="exp-timeline">
+        <div class="exp-item">
+          <div class="exp-date">Ago 2023<br>Nov 2023</div>
+          <div class="exp-dot"></div>
+          <div class="exp-content">
+            <div class="exp-title">Estagiário de TI</div>
+            <div class="exp-company">Laux Systems</div>
+            <ul class="exp-list">
+              <li>Suporte técnico e troubleshooting para sistemas, redes e infraestrutura.</li>
+              <li>Diagnóstico de incidentes e participação em ações corretivas.</li>
+              <li>Documentação de configurações, procedimentos e atividades técnicas.</li>
+              <li>Colaboração com equipes técnicas na resolução de problemas de infraestrutura.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-wrap">
+      <p class="section-label">04 — formação</p>
+      <h2>Educação &amp; Certificações</h2>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <span class="edu-badge">Em andamento — 2032</span>
+          <div class="edu-degree">Bacharelado em Engenharia da Computação</div>
+          <div class="edu-institution">UFRGS — Universidade Federal do Rio Grande do Sul</div>
+          <div class="edu-period">2025 → 2032 &nbsp;·&nbsp; 2º semestre</div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge">Concluído — 2024</span>
+          <div class="edu-degree">Técnico em Informática para Internet</div>
+          <div class="edu-institution">QI Faculdade e Escola Técnica</div>
+          <div class="edu-period">2020 → 2024</div>
+        </div>
+        <div class="edu-card" style="grid-column: 1 / -1;">
+          <span class="edu-badge">Certificações Online</span>
+          <div class="edu-degree">Cursos e Certificações — Plataforma Alura</div>
+          <div class="edu-institution">Alura</div>
+          <div class="edu-period">
+            <a href="https://cursos.alura.com.br/user/miguel-kelbert/fullCertificate/ce35d750cd8471adf2ac558a20b63f06" target="_blank" style="color:var(--accent);font-family:var(--mono);font-size:.75rem;text-decoration:none;">
+              → Ver certificado completo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="lang-row">
+        <div class="lang-card">
+          <span class="lang-flag">🇧🇷</span>
+          <div>
+            <div class="lang-info-name">Português</div>
+            <div class="lang-info-level">Nativo</div>
+          </div>
+        </div>
+        <div class="lang-card">
+          <span class="lang-flag">🇺🇸</span>
+          <div>
+            <div class="lang-info-name">English</div>
+            <div class="lang-info-level">Advanced — leitura, escrita e conversação técnica</div>
+          </div>
+        </div>
+        <div class="lang-card">
+          <span class="lang-flag">🇪🇸</span>
+          <div>
+            <div class="lang-info-name">Español</div>
+            <div class="lang-info-level">Básico</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-wrap">
+      <p class="section-label" style="text-align:center;">05 — contato</p>
+      <div class="contact-card">
+        <h2>Vamos conversar?</h2>
+        <p>Estou aberto a oportunidades de estágio, freelas e colaborações. Manda uma mensagem!</p>
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:miguel.kelbert@gmail.com">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            miguel.kelbert@gmail.com
+          </a>
+          <a class="contact-link" href="https://www.linkedin.com/in/miguel-kelbert-92886b239/" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/></svg>
+            linkedin.com/in/miguel-kelbert
+          </a>
+          <a class="contact-link" href="https://github.com/Migark" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.7 1.6.2 2.8.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+            github.com/Migark
+          </a>
+          <a class="contact-link" href="tel:+5551995356275">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.06 6.06l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            (51) 99535-6275
+          </a>
+        </div>
+        <a href="mailto:miguel.kelbert@gmail.com" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.85rem;">
+          → Enviar mensagem
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Miguel Ângelo Rocha Kelbert</span> · Canoas, RS · Desenvolvido com HTML, CSS &amp; carinho
+  </footer>
+
 </body>
 </html>
